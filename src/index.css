@@ -48,3 +48,11 @@ ol, ul{
 .game-info{
 	margin-left: 20px;
 }
+
+.jump-button{
+	font-weight: normal;
+}
+
+.bold{
+	font-weight: bold;
+}
