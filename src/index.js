@@ -145,25 +145,77 @@ class Game extends React.Component{
 }
 
 function calculateWinner(squares){
-	const lines = [
-		[0, 1, 2],
-		[3, 4, 5],
-		[6, 7, 8],
-		[0, 3, 6],
-		[1, 4, 7],
-		[2, 5, 8],
-		[0, 4, 8],
-		[2, 4, 6],
-	];
-	for(let i = 0; i < lines.length; i++){
-		const [a, b, c] = lines[i];
-		if(squares[a] && squares[a] ===
-			squares[b] && squares[a] ===
-			squares[c]
-		){
-			return squares[a];
+	// ***check diagonal wins***
+	// top-left to bottom-right
+	// if first square isn't blank
+	if(squares[twoDToOneD(0, 0)]){
+		// store it
+		var startSquare = squares[twoDToOneD(0, 0)];
+		// for each column/row positive
+		for(var i = 1; i < BOARD_DIM; i++){
+			// if not same as first
+			if(squares[twoDToOneD(i, i)] !== startSquare){
+				break;
+			}
+			// if last column/row
+			else if(i === BOARD_DIM-1){
+				// return first aka winner
+				return startSquare;
+			}
 		}
 	}
+	// bottom-left to top-right
+	if(squares[twoDToOneD(0, BOARD_DIM-1)]){
+		var startSquare = squares[twoDToOneD(0, BOARD_DIM-1)];
+		for(var i = 1; i < BOARD_DIM-1; i++){
+			if(squares[twoDToOneD(i, BOARD_DIM-1-i)] !== startSquare){
+				break;
+			}
+			else if(i === BOARD_DIM-1){
+				return startSquare;
+			}
+		}
+	}
+	// ***check vertical wins***
+	// for each column
+	for(var x = 0; x < BOARD_DIM; x++){
+		if(squares[twoDToOneD(x, 0)]){
+			var startSquare = squares[twoDToOneD(x, 0)];
+			// for rows other than first
+			for(var y = 1; y < BOARD_DIM; y++){
+				// if different from first square
+				if(squares[twoDToOneD(x, y)] !== startSquare){
+					// exit for loop
+					break;
+				}
+				// else if last row
+				else if(y === BOARD_DIM-1){
+					// return first aka the winner
+					return startSquare;
+				}
+			}
+		}
+	}
+	// ***check horizontal wins***
+	for(var y = 0; y < BOARD_DIM; y++){
+		if(squares[twoDToOneD(0, y)]){
+			var startSquare = squares[twoDToOneD(0, y)];
+			// for rows other than first
+			for(var x = 1; x < BOARD_DIM; x++){
+				// if different from first square
+				if(squares[twoDToOneD(x, y)] !== startSquare){
+					// exit for loop
+					break;
+				}
+				// else if last row
+				else if(x === BOARD_DIM-1){
+					// return first aka the winner
+					return startSquare;
+				}
+			}
+		}
+	}
+
 	return null;
 }
 
@@ -171,6 +223,10 @@ function oneDToTwoD(coordinate){
 	var x = coordinate % BOARD_DIM;
 	var y = Math.floor(coordinate / BOARD_DIM);
 	return [x, y];
+}
+
+function twoDToOneD(x, y){
+	return (y*BOARD_DIM) + x;
 }
 
 ReactDOM.render(
