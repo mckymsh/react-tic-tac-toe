@@ -94,7 +94,6 @@ class Game extends React.Component{
 		const history = this.state.history;
 		const current = history[this.state.stepNumber];
 		const winner = calculateWinner(current.squares);
-		const lastMove = history[this.state.stepNumber].lastMove;
 
 		const moves = history.map((step, move) => {
 			var coords = this.oneDToTwoD(history[move].lastMove);
