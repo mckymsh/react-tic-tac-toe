@@ -121,10 +121,12 @@ class Game extends React.Component{
 		});
 
 		let status;
-		if(winner){
-			status = 'Winner: ' + winner;
+		if(winner === 'Q'){
+			status = "Oh no! It's a draw!";
+		}else if(winner){
+			status = "Winner: " + winner;
 		}else{
-			status ='Next player: ' +
+			status = "Next player: " +
 				(this.state.xIsNext ? 'X' : 'O');
 		}
 		return(
@@ -145,14 +147,26 @@ class Game extends React.Component{
 }
 
 function calculateWinner(squares){
+	var blanks = 0;
+	var i, x, y = 0;
+	var startSquare = null;
+	for(i = 0; i < squares.length; i++){
+		if(!squares[i]){
+			blanks++;
+		}
+	}
+	if(blanks < 1){
+		// no one can win
+		return 'Q';
+	}
 	// ***check diagonal wins***
 	// top-left to bottom-right
 	// if first square isn't blank
 	if(squares[twoDToOneD(0, 0)]){
 		// store it
-		var startSquare = squares[twoDToOneD(0, 0)];
+		startSquare = squares[twoDToOneD(0, 0)];
 		// for each column/row positive
-		for(var i = 1; i < BOARD_DIM; i++){
+		for(i = 1; i < BOARD_DIM; i++){
 			// if not same as first
 			if(squares[twoDToOneD(i, i)] !== startSquare){
 				break;
@@ -166,8 +180,8 @@ function calculateWinner(squares){
 	}
 	// bottom-left to top-right
 	if(squares[twoDToOneD(0, BOARD_DIM-1)]){
-		var startSquare = squares[twoDToOneD(0, BOARD_DIM-1)];
-		for(var i = 1; i < BOARD_DIM-1; i++){
+		startSquare = squares[twoDToOneD(0, BOARD_DIM-1)];
+		for(i = 1; i < BOARD_DIM-1; i++){
 			if(squares[twoDToOneD(i, BOARD_DIM-1-i)] !== startSquare){
 				break;
 			}
@@ -178,11 +192,11 @@ function calculateWinner(squares){
 	}
 	// ***check vertical wins***
 	// for each column
-	for(var x = 0; x < BOARD_DIM; x++){
+	for(x = 0; x < BOARD_DIM; x++){
 		if(squares[twoDToOneD(x, 0)]){
-			var startSquare = squares[twoDToOneD(x, 0)];
+			startSquare = squares[twoDToOneD(x, 0)];
 			// for rows other than first
-			for(var y = 1; y < BOARD_DIM; y++){
+			for(y = 1; y < BOARD_DIM; y++){
 				// if different from first square
 				if(squares[twoDToOneD(x, y)] !== startSquare){
 					// exit for loop
@@ -197,11 +211,11 @@ function calculateWinner(squares){
 		}
 	}
 	// ***check horizontal wins***
-	for(var y = 0; y < BOARD_DIM; y++){
+	for(y = 0; y < BOARD_DIM; y++){
 		if(squares[twoDToOneD(0, y)]){
-			var startSquare = squares[twoDToOneD(0, y)];
+			startSquare = squares[twoDToOneD(0, y)];
 			// for rows other than first
-			for(var x = 1; x < BOARD_DIM; x++){
+			for(x = 1; x < BOARD_DIM; x++){
 				// if different from first square
 				if(squares[twoDToOneD(x, y)] !== startSquare){
 					// exit for loop
@@ -215,7 +229,6 @@ function calculateWinner(squares){
 			}
 		}
 	}
-
 	return null;
 }
 
