@@ -85,22 +85,17 @@ class Game extends React.Component{
 			xIsNext: (step % 2) === 0,
 		});
 	}
-	oneDToTwoD(coordinate){
-		var x = coordinate % boardDim;
-		var y = Math.floor(coordinate / boardDim);
-		return [x, y];
-	}
 	render(){
 		const history = this.state.history;
 		const current = history[this.state.stepNumber];
 		const winner = calculateWinner(current.squares);
 
 		const moves = history.map((step, move) => {
-			var coords = this.oneDToTwoD(history[move].lastMove);
+			var coords = oneDToTwoD(history[move].lastMove);
 			var x = coords[0];
 			var y = coords[1];
 			const desc = move ?
-				'Go to move #' + move + '{' + x + ',' + y + '}' :
+				'Go to move #' + move + ' {' + x + ',' + y + '}' :
 				'Go to game start';
 			return(
 				<li key={move}>
@@ -156,6 +151,12 @@ function calculateWinner(squares){
 		}
 	}
 	return null;
+}
+
+function oneDToTwoD(coordinate){
+	var x = coordinate % boardDim;
+	var y = Math.floor(coordinate / boardDim);
+	return [x, y];
 }
 
 ReactDOM.render(
