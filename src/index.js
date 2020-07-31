@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-const boardDim = 3;
+const BOARD_DIM = 3;
 
 function Square(props){
 	return(
@@ -25,26 +25,26 @@ class Board extends React.Component{
 		);
 	}
 
-	render(){
+	renderRow(y){
+		const cellNums = Array.from(Array(BOARD_DIM).keys());
+		const row = cellNums.map((column, cellNum) => {
+			return this.renderSquare((y*BOARD_DIM)+cellNum)
+		});
 		return(
-			<div>
-				<div className="board-row">
-					{this.renderSquare(0)}
-					{this.renderSquare(1)}
-					{this.renderSquare(2)}
-				</div>
-				<div className="board-row">
-					{this.renderSquare(3)}
-					{this.renderSquare(4)}
-					{this.renderSquare(5)}
-				</div>
-				<div className="board-row">
-					{this.renderSquare(6)}
-					{this.renderSquare(7)}
-					{this.renderSquare(8)}
-				</div>
-			</div>
+			<div className="board-row">{row}</div>
 		);
+	}
+
+	render(){
+		const rowNums = Array.from(Array(BOARD_DIM).keys());
+		const board = rowNums.map((rowNum, row) => {
+			return(
+				<div>
+					{this.renderRow(row)}
+				</div>
+			);
+		});
+		return board;
 	}
 }
 
@@ -62,6 +62,7 @@ class Game extends React.Component{
 		}
 	}
 	handleClick(i){
+		// window.alert(i);
 		const history = this.state.history.slice(
 			0, this.state.stepNumber+1);
 		const current = history[history.length - 1];
@@ -167,8 +168,8 @@ function calculateWinner(squares){
 }
 
 function oneDToTwoD(coordinate){
-	var x = coordinate % boardDim;
-	var y = Math.floor(coordinate / boardDim);
+	var x = coordinate % BOARD_DIM;
+	var y = Math.floor(coordinate / BOARD_DIM);
 	return [x, y];
 }
 
