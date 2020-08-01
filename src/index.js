@@ -54,7 +54,7 @@ class Game extends React.Component{
 		super(props);
 		this.state={
 			history: [{
-				squares: Array(9).fill(null),
+				squares: Array(BOARD_DIM*BOARD_DIM).fill(null),
 				lastMove: null,
 			}],
 			stepNumber: 0,
@@ -150,6 +150,7 @@ function calculateWinner(squares){
 	var blanks = 0;
 	var i, x, y = 0;
 	var startSquare = null;
+	var winningSquares = Array(BOARD_DIM).fill(null);
 	for(i = 0; i < squares.length; i++){
 		if(!squares[i]){
 			blanks++;
